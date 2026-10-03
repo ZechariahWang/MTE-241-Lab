@@ -60,8 +60,8 @@ all: main-build
 main-build: ece350_start.elf secondary-outputs
 
 # Tool invocations
-ece350_start.elf ece350_start.map: $(OBJS) $(USER_OBJS) C:\Users\zecha\Downloads\ece350_start\ece350_start\STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "ece350_start.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\zecha\Downloads\ece350_start\ece350_start\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ece350_start.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+ece350_start.elf ece350_start.map: $(OBJS) $(USER_OBJS) C:\Users\zecha\OneDrive\Documents\ece350_start\ece350_start\STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "ece350_start.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\zecha\OneDrive\Documents\ece350_start\ece350_start\STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ece350_start.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

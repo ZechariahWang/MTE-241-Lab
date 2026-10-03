@@ -1,3 +1,4 @@
+"./Core/Src/asmDump_for_lab2.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32f4xx_hal_msp.o"
 "./Core/Src/stm32f4xx_it.o"
