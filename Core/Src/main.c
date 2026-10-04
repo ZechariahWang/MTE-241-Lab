@@ -21,16 +21,14 @@
 #include <stdio.h> //You are permitted to use this library, but currently only printf is implemented. Anything else is up to you!
 #include <stdbool.h>
 
+#define RUN_FIRST_THREAD 0x3
+
+uint32_t* stackptr;
+
+extern void runFirstThread(void);
+
 void jumpAssembly(void* fcn) {
 	__asm("MOV PC, R0");
-}
-
-void print_success(void) {
-    __asm volatile ("SVC #0");
-}
-
-void print_failure(void) {
-    __asm volatile ("SVC #1");
 }
 
 void print_continuously(void) {
@@ -56,19 +54,25 @@ void SVC_Handler_Main(unsigned int *svc_args)
               case 18:
                       printf("Hello from system call 18!\r\n");
                       break;
+              case RUN_FIRST_THREAD:
+                      __set_PSP((uint32_t)stackptr);
+                      runFirstThread();
+                      break;
               default: /* unknown SVC */
                       break;
       }
 }
 
-void print_success(void)
-{
+void print_success(void) {
       __asm("SVC #17");
 }
 
-void print_hello(void)
-{
+void print_hello(void) {
       __asm("SVC #18");
+}
+
+void run_first_thread(void) {
+      __asm("SVC #3");
 }
 
 /**
@@ -94,12 +98,26 @@ int main(void)
 	uint32_t* MSP_INIT_VAL = *(uint32_t**)0x0;
 	printf("MSP Init is: %p\r\n",MSP_INIT_VAL); // note the %p to print a pointer. It will be in hex
 
-	uint32_t PSP_val = (uint32_t)MSP_INIT_VAL - 0x400;
-	__set_PSP(PSP_val);
-	__set_CONTROL(2);
-
     print_success();
     print_hello();
+
+    stackptr = (uint32_t*)((uint32_t)MSP_INIT_VAL - 0x400);
+
+    // fill the stack, top down
+    stackptr = stackptr - 1;
+    *stackptr = 1 << 24;
+
+    stackptr = stackptr - 1;
+    *stackptr = (uint32_t)print_continuously;
+
+    // LR, R12, R3, R2, R1, R0, then R11 down to R4: 14 registers
+    for (int i = 0; i < 14; i++)
+    {
+            stackptr = stackptr - 1;
+            *stackptr = 0xA;
+    }
+
+    run_first_thread();
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */

@@ -1,0 +1,7 @@
+../Core/Src/main.c:30:6:jumpAssembly	1
+../Core/Src/main.c:34:6:print_continuously	1
+../Core/Src/main.c:40:6:SVC_Handler_Main	5
+../Core/Src/main.c:66:6:print_success	1
+../Core/Src/main.c:70:6:print_hello	1
+../Core/Src/main.c:74:6:run_first_thread	1
+../Core/Src/main.c:83:5:main	2

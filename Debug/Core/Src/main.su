@@ -1,0 +1,7 @@
+../Core/Src/main.c:30:6:jumpAssembly	16	static,ignoring_inline_asm
+../Core/Src/main.c:34:6:print_continuously	8	static
+../Core/Src/main.c:40:6:SVC_Handler_Main	24	static,ignoring_inline_asm
+../Core/Src/main.c:66:6:print_success	4	static,ignoring_inline_asm
+../Core/Src/main.c:70:6:print_hello	4	static,ignoring_inline_asm
+../Core/Src/main.c:74:6:run_first_thread	4	static,ignoring_inline_asm
+../Core/Src/main.c:83:5:main	16	static
