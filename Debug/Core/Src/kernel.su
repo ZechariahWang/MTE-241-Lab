@@ -1,0 +1,7 @@
+../Core/Src/kernel.c:24:6:print_success	4	static,ignoring_inline_asm
+../Core/Src/kernel.c:28:6:print_hello	4	static,ignoring_inline_asm
+../Core/Src/kernel.c:32:6:osKernelStart	4	static,ignoring_inline_asm
+../Core/Src/kernel.c:36:6:osKernelInitialize	4	static
+../Core/Src/kernel.c:41:11:allocate_space	16	static
+../Core/Src/kernel.c:51:5:osCreateThread	24	static
+../Core/Src/kernel.c:72:6:SVC_Handler_Main	24	static,ignoring_inline_asm
