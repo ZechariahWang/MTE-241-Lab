@@ -7,7 +7,7 @@
 
 #include "main.h"
 #include "kernel.h"
-#include <stdio.h> //You are permitted to use this library, but currently only printf is implemented. Anything else is up to you!
+#include <stdio.h> // You are permitted to use this library, but currently only printf is implemented. Anything else is up to you!
 #include <stdbool.h>
 
 #define RUN_FIRST_THREAD 0x3
@@ -17,7 +17,9 @@
 uint32_t* msp_init;
 uint32_t* LAST_ALLOCATED_ADDRESS;
 
-thread kernel_thread;
+thread threadArray[MAX_THREADS];
+int currentThread;
+int numThreadsRunning;
 
 extern void runFirstThread(void);
 
@@ -36,6 +38,9 @@ void osKernelStart(void) {
 void osKernelInitialize(void) {
     msp_init = *(uint32_t**)0x0;
     LAST_ALLOCATED_ADDRESS = msp_init;
+
+    currentThread = 0;
+    numThreadsRunning = 0;
 }
 
 uint32_t* allocate_space(void) {
@@ -49,8 +54,12 @@ uint32_t* allocate_space(void) {
 }
 
 int osCreateThread(void (*fn)(void*)) {
+
+	if (numThreadsRunning >= MAX_THREADS) { return 0; }
+
 	uint32_t* space = allocate_space();
 	if (space == NULL) { return 0; }
+
 	else {
 		space = space -1;
         *space = 1 << 24;
@@ -63,8 +72,9 @@ int osCreateThread(void (*fn)(void*)) {
                 *space = 0xA;
         }
 
-        kernel_thread.sp = space;
-        kernel_thread.thread_function = fn;
+        threadArray[numThreadsRunning].sp = space;
+        threadArray[numThreadsRunning].thread_function = fn;
+        numThreadsRunning += 1;
         return 1;
 	}
 }
@@ -87,7 +97,9 @@ void SVC_Handler_Main(unsigned int *svc_args)
                       printf("Hello from system call 18!\r\n");
                       break;
               case RUN_FIRST_THREAD:
-            	  	  __set_PSP((uint32_t)kernel_thread.sp);
+            	  	  if (numThreadsRunning == 0) { break; }
+            	  	  currentThread = 0;
+            	  	  __set_PSP((uint32_t)threadArray[0].sp);
                       runFirstThread();
                       break;
               default: /* unknown SVC */

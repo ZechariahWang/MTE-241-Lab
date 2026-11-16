@@ -23,7 +23,12 @@ typedef struct k_thread{
 	void (*thread_function)(void*);
 }thread;
 
-extern thread kernel_thread;
+#define MAX_THREADS 16
+
+extern thread threadArray[MAX_THREADS];
+extern int currentThread;
+extern int numThreadsRunning;
+
 extern int osCreateThread(void (*fn)(void*));
 
 extern void SVC_Handler_Main(unsigned int *svc_args);
