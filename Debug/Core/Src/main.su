@@ -1,3 +1,4 @@
 ../Core/Src/main.c:25:6:jumpAssembly	16	static,ignoring_inline_asm
-../Core/Src/main.c:29:6:print_continuously	16	static
-../Core/Src/main.c:40:5:main	8	static
+../Core/Src/main.c:29:6:thread_one	16	static
+../Core/Src/main.c:36:6:thread_two	16	static
+../Core/Src/main.c:48:5:main	8	static

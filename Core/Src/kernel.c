@@ -21,6 +21,12 @@ thread threadArray[MAX_THREADS];
 int currentThread;
 int numThreadsRunning;
 
+#define YIELD 0x4
+
+void osYield(void){
+	__asm("SVC #4");
+}
+
 extern void runFirstThread(void);
 
 void print_success(void) {
@@ -41,6 +47,12 @@ void osKernelInitialize(void) {
 
     currentThread = 0;
     numThreadsRunning = 0;
+}
+
+void osSched(void) {
+    threadArray[currentThread].sp = (uint32_t*)(__get_PSP() - 8*4);
+    currentThread = (currentThread + 1) % numThreadsRunning;
+    __set_PSP((uint32_t)threadArray[currentThread].sp);
 }
 
 uint32_t* allocate_space(void) {
@@ -102,6 +114,10 @@ void SVC_Handler_Main(unsigned int *svc_args)
             	  	  __set_PSP((uint32_t)threadArray[0].sp);
                       runFirstThread();
                       break;
+              case YIELD:
+            	    SCB->ICSR |= 1<<28;
+            	    __asm("isb");
+            	    break;
               default: /* unknown SVC */
                       break;
       }

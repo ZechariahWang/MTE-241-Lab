@@ -12,11 +12,15 @@
 extern uint32_t* msp_init;
 extern uint32_t* LAST_ALLOCATED_ADDRESS;
 
+extern void osYield(void);
+
 extern void print_success(void);
 extern void print_hello(void);
 
 extern void osKernelInitialize(void);
 extern void osKernelStart(void);
+
+extern void osSched(void);
 
 typedef struct k_thread{
 	uint32_t* sp; // sp js means stack pointer

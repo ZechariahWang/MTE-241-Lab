@@ -26,10 +26,18 @@ void jumpAssembly(void* fcn) {
 	__asm("MOV PC, R0");
 }
 
-void print_continuously(void* arg) {
-	while (true) {
-		 printf("Hello, PC! \n");
-	}
+void thread_one(void* arg) {
+    while (true) {
+        printf("Thread 1\r\n");
+        osYield();
+    }
+}
+
+void thread_two(void* arg) {
+    while (true) {
+        printf("Thread 2\r\n");
+        osYield();
+    }
 }
 
 /**
@@ -60,7 +68,8 @@ int main(void)
 	print_success();
 	print_hello();
 
-	osCreateThread(print_continuously);
+	osCreateThread(thread_one);
+	osCreateThread(thread_two);
 	osKernelStart();
 
 	/* Infinite loop */
