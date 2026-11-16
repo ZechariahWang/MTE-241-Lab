@@ -50,6 +50,7 @@ void osKernelInitialize(void) {
 }
 
 void osSched(void) {
+	// PendSV_Handler pushed R4-R11 (8 registers, 4 bytes each) below PSP without moving PSP
     threadArray[currentThread].sp = (uint32_t*)(__get_PSP() - 8*4);
     currentThread = (currentThread + 1) % numThreadsRunning;
     __set_PSP((uint32_t)threadArray[currentThread].sp);
